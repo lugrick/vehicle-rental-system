@@ -476,14 +476,37 @@ function confirmation() {
         'You can view it from your customer dashboard.';
 }
 
+function getCurrentCustomer() {
+    try {
+        return JSON.parse(localStorage.getItem('driveeaseCustomer') || 'null');
+    } catch {
+        return null;
+    }
+}
+
+function protectPage() {
+    const page = location.pathname.split('/').pop() || 'index.html';
+    const publicPages = ['index.html', 'login.html', 'register.html'];
+
+    if (!publicPages.includes(page) && !getCurrentCustomer()) {
+        location.replace('login.html');
+        return false;
+    }
+
+    return true;
+}
+
 document.addEventListener(
     'DOMContentLoaded',
     async () => {
+
+        if (!protectPage()) return;
 
         await loadVehicles();
 
         dashboard();
         login();
+        register();
         confirmation();
 
     }
