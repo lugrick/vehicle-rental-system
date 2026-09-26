@@ -410,7 +410,8 @@ function register() {
         e.preventDefault();
 
         const name = document.getElementById('registerName').value.trim();
-        const phone = document.getElementById('registerPhone').value.trim();
+        let phone = document.getElementById('registerPhone').value.replace(/\D/g, '');
+        if (phone.startsWith('91') && phone.length === 12) phone = phone.slice(2);
         const password = document.getElementById('registerPassword').value;
         const confirm = document.getElementById('registerConfirm').value;
         const error = document.getElementById('registerError');
@@ -419,6 +420,12 @@ function register() {
         if (error) {
             error.style.display = 'none';
             error.textContent = '';
+        }
+
+        if (phone.length !== 10) {
+            error.textContent = 'Please enter a valid 10-digit Indian phone number.';
+            error.style.display = 'block';
+            return;
         }
 
         if (password !== confirm) {
@@ -442,7 +449,7 @@ function register() {
             try { data = JSON.parse(text); } catch { data = text; }
 
             if (!response.ok) {
-                throw new Error(typeof data === 'string' ? data : 'Registration failed');
+                throw new Error(typeof data === 'string' ? data : 'Registration failed. Please check your details.');
             }
 
             localStorage.setItem('driveeaseCustomer', JSON.stringify(data));
