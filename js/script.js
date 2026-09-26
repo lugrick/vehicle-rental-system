@@ -28,10 +28,10 @@ function booking(){
  const v=vehicles.find(x=>x.id===Number(new URLSearchParams(location.search).get('id')))||vehicles[0];if(!v)return;
  const c=customer();if(!c){location.href='login.html';return}
  document.getElementById('bookingVehicle').textContent=v.name+' · '+money(v.pricePerDay)+' per day';
- const pickup=document.getElementById('bookPickup'),ret=document.getElementById('bookReturn'),total=document.getElementById('estimatedTotal'),error=document.getElementById('bookingError');
+ const pickup=document.getElementById('bookPickup'),ret=document.getElementById('bookReturn'),total=document.getElementById('estimatedTotal'),error=document.getElementById('bookingError')||document.createElement('p');
  const today=new Date().toISOString().split('T')[0];pickup.min=today;ret.min=today;
- const update=()=>{if(!pickup.value||!ret.value){total.textContent=money(0);return}const days=Math.max(1,Math.ceil((new Date(ret.value)-new Date(pickup.value))/86400000));total.textContent=money(days*v.pricePerDay)};
- [pickup,ret].forEach(x=>x.addEventListener('change',update));
+ const update=()=>{if(!pickup||!ret||!total)return;if(!pickup.value||!ret.value){total.textContent=money(0);return}const days=Math.max(1,Math.ceil((new Date(ret.value)-new Date(pickup.value))/86400000));total.textContent=money(days*v.pricePerDay)};
+ [pickup,ret].filter(Boolean).forEach(x=>x.addEventListener('change',update));
  form.addEventListener('submit',async e=>{e.preventDefault();error.style.display='none';if(new Date(ret.value)<new Date(pickup.value)){error.textContent='Return date cannot be before pickup date.';error.style.display='block';return}
  const button=form.querySelector('button[type=submit]');button.disabled=true;button.textContent='Checking...';
  try{const r=await api('/reservations',{method:'POST',body:JSON.stringify({customerId:c.id,vehicleId:v.id,startDate:pickup.value,endDate:ret.value})});location.href='confirmation.html?id='+r.id}catch(err){error.textContent=err.message;error.style.display='block'}finally{button.disabled=false;button.textContent='Confirm Reservation'}});
@@ -57,7 +57,7 @@ async function register(){
  f.addEventListener('submit',async e=>{e.preventDefault();const name=document.getElementById('registerName').value.trim(),phone=normalizePhone(document.getElementById('registerPhone').value),password=document.getElementById('registerPassword').value,confirm=document.getElementById('registerConfirm').value,error=document.getElementById('registerError'),button=f.querySelector('button[type=submit]');error.style.display='none';if(phone.length!==10){error.textContent='Enter a valid 10-digit phone number.';error.style.display='block';return}if(password!==confirm){error.textContent='Passwords do not match.';error.style.display='block';return}button.disabled=true;button.textContent='Creating account...';try{const data=await api('/customers/register',{method:'POST',body:JSON.stringify({name,phoneNumber:phone,password})});localStorage.setItem('driveeaseCustomer',JSON.stringify(data));location.href='home.html'}catch(err){error.textContent=err.message;error.style.display='block'}finally{button.disabled=false;button.textContent='Register'}});
 }
 function confirmation(){const el=document.getElementById('confirmationText');if(el){const id=new URLSearchParams(location.search).get('id');el.textContent='Reservation #'+(id||'')+' was confirmed and saved to the database.'}}
-function protectPage(){return true}
+function protectPage(){const p=location.pathname.split('/').pop()||'index.html';if(!['index.html','login.html','register.html'].includes(p)&&!customer()){location.replace('login.html');return false}return true}
 function logout(){localStorage.removeItem('driveeaseCustomer');location.href='login.html'}
 document.addEventListener('DOMContentLoaded',async()=>{if(!protectPage())return;await loadVehicles();login();register();dashboard();confirmation();const out=document.getElementById('logoutButton');if(out)out.onclick=logout});
 document.addEventListener('input',e=>{if(e.target.id==='vehicleSearch'||e.target.id==='typeFilter')renderVehicles()});
