@@ -11,17 +11,19 @@ async function loadVehicles(){
  try{vehicles=await api('/vehicles');renderVehicles();details();booking();availability()}
  catch(e){console.error(e);const g=document.getElementById('vehicleGrid');if(g)g.innerHTML='<div class="empty">Unable to connect to the vehicle service.</div>'}
 }
-function icon(v){return v.type==='Bike'?'🏍️':'🚘'}
+function icon(v){return v.type==='Bicycle'?'🚲':v.type==='Bike'?'🏍️':'🚘'}
+function imageUrl(v){return v.type==='Bicycle'?'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=900&q=80':v.type==='Bike'?'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80':'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80'}
+function helmetText(v){return v.type==='Bike'||v.type==='Bicycle'?'Helmet provided with every rental':'Optional safety kit available'}
 function renderVehicles(){
  const grid=document.getElementById('vehicleGrid');if(!grid)return;
  const q=(document.getElementById('vehicleSearch')?.value||'').toLowerCase(),t=document.getElementById('typeFilter')?.value||'all';
  const list=vehicles.filter(v=>(v.name.toLowerCase().includes(q)||v.type.toLowerCase().includes(q))&&(t==='all'||v.type===t));
- grid.innerHTML=list.map(v=>`<article class="vehicle-card"><div class="vehicle-img">${icon(v)}</div><span class="eyebrow">${v.type}</span><h3>${v.name}</h3><p class="vehicle-meta">${v.type==='Bike'?2:5} seats · Petrol · ${v.available?'Available':'Unavailable'}</p><div class="rate">${money(v.pricePerDay)} <small>/ day</small></div><a class="btn primary" style="margin-top:15px" href="vehicle-details.html?id=${v.id}">View Details</a></article>`).join('')||'<div class="empty">No vehicles found.</div>';
+ grid.innerHTML=list.map(v=>`<article class="vehicle-card"><div class="vehicle-img"><img src="${imageUrl(v)}" alt="${v.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="display:none">${icon(v)}</span></div><span class="eyebrow">${v.type}</span><h3>${v.name}</h3><p class="vehicle-meta">${v.type==='Bicycle'?'2 wheels · Human powered':v.type==='Bike'?'2 wheels · Petrol':'5 seats · Petrol'} · ${helmetText(v)} · ${v.available?'Available':'Unavailable'}</p><div class="rate">${money(v.pricePerDay)} <small>/ day</small></div><a class="btn primary" style="margin-top:15px" href="vehicle-details.html?id=${v.id}">View Details</a></article>`).join('')||'<div class="empty">No vehicles found.</div>';
 }
 function details(){
  const el=document.getElementById('vehicleDetails');if(!el)return;
  const id=Number(new URLSearchParams(location.search).get('id'));const v=vehicles.find(x=>x.id===id)||vehicles[0];if(!v)return;
- el.innerHTML=`<div><div class="details-img">${icon(v)}</div></div><div class="details-card"><span class="eyebrow">${v.type}</span><h1 style="font:700 44px 'Space Grotesk';margin:12px 0">${v.name}</h1><p style="color:#667085;line-height:1.7">Comfortable and well-maintained vehicle for your next trip.</p><p><b>${v.type==='Bike'?2:5}</b> seats · <b>Petrol</b> · <b>${v.available?'Available':'Unavailable'}</b></p><h2>${money(v.pricePerDay)} <small>/ day</small></h2>${v.available?'<a class="btn primary" href="booking.html?id='+v.id+'">Reserve Now</a>':'<span class="btn ghost">Currently Unavailable</span>'}</div>`;
+ el.innerHTML=`<div><div class="details-img"><img src="${imageUrl(v)}" alt="${v.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span style="display:none">${icon(v)}</span></div></div><div class="details-card"><span class="eyebrow">${v.type}</span><h1 style="font:700 44px 'Space Grotesk';margin:12px 0">${v.name}</h1><p style="color:#667085;line-height:1.7">Comfortable and well-maintained vehicle for your next trip.</p><p><b>${v.type==='Bicycle'?'2 wheels':v.type==='Bike'?'2 wheels':'5 seats'}</b> · <b>${v.type==='Bicycle'?'Human powered':v.type==='Bike'?'Petrol':'Petrol'}</b> · <b>${v.available?'Available':'Unavailable'}</b></p><p class="helmet-note">🪖 ${helmetText(v)}</p><h2>${money(v.pricePerDay)} <small>/ day</small></h2>${v.available?'<a class="btn primary" href="booking.html?id='+v.id+'">Reserve Now</a>':'<span class="btn ghost">Currently Unavailable</span>'}</div>`;
 }
 function showRegistrationPrompt(){
  const id=new URLSearchParams(location.search).get('id');
