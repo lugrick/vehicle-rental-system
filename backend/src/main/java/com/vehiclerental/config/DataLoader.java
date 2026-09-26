@@ -44,6 +44,12 @@ public class DataLoader {
    addIfMissing(repo, "Hero Xpulse 200", "Bike", "KL-11-AB-2014", 850);
    addIfMissing(repo, "Bajaj Avenger 160", "Bike", "KL-11-AB-2015", 800);
    addIfMissing(repo, "TVS Ntorq 125", "Bike", "KL-11-AB-2016", 600);
+   addIfMissing(repo, "BTwin Riverside", "Bicycle", "KL-11-AB-3001", 300);
+   addIfMissing(repo, "Firefox Road Runner", "Bicycle", "KL-11-AB-3002", 350);
+   addIfMissing(repo, "Hero Sprint", "Bicycle", "KL-11-AB-3003", 300);
+   addIfMissing(repo, "Montra Downtown", "Bicycle", "KL-11-AB-3004", 400);
+   addIfMissing(repo, "Leader Beast", "Bicycle", "KL-11-AB-3005", 250);
+   addIfMissing(repo, "Hercules Roadeo", "Bicycle", "KL-11-AB-3006", 450);
   };
  }
 
