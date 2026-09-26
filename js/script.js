@@ -348,32 +348,57 @@ function availability() {
 }
 
 function login() {
-
-    const f =
-        document.getElementById('loginForm');
-
+    const f = document.getElementById('loginForm');
     if (!f) return;
 
-    f.addEventListener('submit', e => {
-
+    f.addEventListener('submit', async e => {
         e.preventDefault();
 
-        localStorage.setItem(
-            'driveeaseUser',
-            loginEmail.value
-        );
+        const phone = document.getElementById('loginPhone').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const error = document.getElementById('loginError');
+        const button = f.querySelector('button[type="submit"]');
 
-        location.href =
-            'dashboard.html';
+        if (error) {
+            error.style.display = 'none';
+            error.textContent = '';
+        }
+
+        button.disabled = true;
+        button.textContent = 'Logging in...';
+
+        try {
+            const response = await fetch(\`\${API_URL}/customers/login\`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phoneNumber: phone, password: password })
+            });
+
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch { data = text; }
+
+            if (!response.ok) {
+                throw new Error(typeof data === 'string' ? data : 'Invalid phone number or password');
+            }
+
+            localStorage.setItem('driveeaseCustomer', JSON.stringify(data));
+            localStorage.setItem('driveeaseUser', data.phoneNumber || phone);
+            location.href = 'home.html';
+        } catch (err) {
+            if (error) {
+                error.textContent = err.message || 'Login failed. Please try again.';
+                error.style.display = 'block';
+            }
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Login';
+        }
     });
 
-    if (typeof adminLogin !== 'undefined') {
-
-        adminLogin.addEventListener(
-            'click',
-            () => location.href = 'admin/index.html'
-        );
-
+    const adminButton = document.getElementById('adminLogin');
+    if (adminButton) {
+        adminButton.addEventListener('click', () => location.href = 'admin/index.html');
     }
 }
 
