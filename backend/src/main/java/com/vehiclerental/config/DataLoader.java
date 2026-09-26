@@ -27,6 +27,22 @@ public class DataLoader {
    addIfMissing(repo, "Bajaj Pulsar N160", "Bike", "KL-11-AB-2006", 750);
    addIfMissing(repo, "TVS Apache RTR 200", "Bike", "KL-11-AB-2007", 800);
    addIfMissing(repo, "Suzuki Access 125", "Bike", "KL-11-AB-2008", 550);
+   addIfMissing(repo, "Toyota Glanza", "Car", "KL-11-AB-1009", 1900);
+   addIfMissing(repo, "Honda Amaze", "Car", "KL-11-AB-1010", 2000);
+   addIfMissing(repo, "Maruti Baleno", "Car", "KL-11-AB-1011", 1850);
+   addIfMissing(repo, "Kia Sonet", "Car", "KL-11-AB-1012", 2300);
+   addIfMissing(repo, "Mahindra XUV700", "Car", "KL-11-AB-1013", 3500);
+   addIfMissing(repo, "Toyota Urban Cruiser", "Car", "KL-11-AB-1014", 2700);
+   addIfMissing(repo, "Tata Punch", "Car", "KL-11-AB-1015", 1950);
+   addIfMissing(repo, "Hyundai Verna", "Car", "KL-11-AB-1016", 2400);
+   addIfMissing(repo, "Honda Hornet 2.0", "Bike", "KL-11-AB-2009", 850);
+   addIfMissing(repo, "KTM Duke 390", "Bike", "KL-11-AB-2010", 1500);
+   addIfMissing(repo, "Yamaha MT-15", "Bike", "KL-11-AB-2011", 1050);
+   addIfMissing(repo, "Bajaj Dominar 400", "Bike", "KL-11-AB-2012", 1300);
+   addIfMissing(repo, "TVS Ronin", "Bike", "KL-11-AB-2013", 900);
+   addIfMissing(repo, "Hero Xpulse 200", "Bike", "KL-11-AB-2014", 850);
+   addIfMissing(repo, "Bajaj Avenger 160", "Bike", "KL-11-AB-2015", 800);
+   addIfMissing(repo, "TVS Ntorq 125", "Bike", "KL-11-AB-2016", 600);
   };
  }
 
