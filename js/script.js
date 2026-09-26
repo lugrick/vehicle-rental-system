@@ -368,7 +368,7 @@ function login() {
         button.textContent = 'Logging in...';
 
         try {
-            const response = await fetch(\`\${API_URL}/customers/login\`, {
+            const response = await fetch(`\${API_URL}/customers/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phoneNumber: phone, password: password })
@@ -431,7 +431,7 @@ function register() {
         button.textContent = 'Creating account...';
 
         try {
-            const response = await fetch(\`\${API_URL}/customers/register\`, {
+            const response = await fetch(`\${API_URL}/customers/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, phoneNumber: phone, password })
