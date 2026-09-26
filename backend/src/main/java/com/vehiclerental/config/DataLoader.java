@@ -19,14 +19,6 @@ public class DataLoader {
    addIfMissing(repo, "Mahindra Thar", "Car", "KL-11-AB-1006", 3200);
    addIfMissing(repo, "Tata Nexon", "Car", "KL-11-AB-1007", 2100);
    addIfMissing(repo, "Hyundai Creta", "Car", "KL-11-AB-1008", 2900);
-   addIfMissing(repo, "Royal Enfield Classic 350", "Bike", "KL-11-AB-2001", 900);
-   addIfMissing(repo, "Yamaha R15", "Bike", "KL-11-AB-2002", 1000);
-   addIfMissing(repo, "Honda Activa", "Bike", "KL-11-AB-2003", 500);
-   addIfMissing(repo, "Royal Enfield Hunter 350", "Bike", "KL-11-AB-2004", 950);
-   addIfMissing(repo, "KTM Duke 200", "Bike", "KL-11-AB-2005", 1100);
-   addIfMissing(repo, "Bajaj Pulsar N160", "Bike", "KL-11-AB-2006", 750);
-   addIfMissing(repo, "TVS Apache RTR 200", "Bike", "KL-11-AB-2007", 800);
-   addIfMissing(repo, "Suzuki Access 125", "Bike", "KL-11-AB-2008", 550);
    addIfMissing(repo, "Toyota Glanza", "Car", "KL-11-AB-1009", 1900);
    addIfMissing(repo, "Honda Amaze", "Car", "KL-11-AB-1010", 2000);
    addIfMissing(repo, "Maruti Baleno", "Car", "KL-11-AB-1011", 1850);
@@ -35,6 +27,15 @@ public class DataLoader {
    addIfMissing(repo, "Toyota Urban Cruiser", "Car", "KL-11-AB-1014", 2700);
    addIfMissing(repo, "Tata Punch", "Car", "KL-11-AB-1015", 1950);
    addIfMissing(repo, "Hyundai Verna", "Car", "KL-11-AB-1016", 2400);
+
+   addIfMissing(repo, "Royal Enfield Classic 350", "Bike", "KL-11-AB-2001", 900);
+   addIfMissing(repo, "Yamaha R15", "Bike", "KL-11-AB-2002", 1000);
+   addIfMissing(repo, "Honda Activa", "Bike", "KL-11-AB-2003", 500);
+   addIfMissing(repo, "Royal Enfield Hunter 350", "Bike", "KL-11-AB-2004", 950);
+   addIfMissing(repo, "KTM Duke 200", "Bike", "KL-11-AB-2005", 1100);
+   addIfMissing(repo, "Bajaj Pulsar N160", "Bike", "KL-11-AB-2006", 750);
+   addIfMissing(repo, "TVS Apache RTR 200", "Bike", "KL-11-AB-2007", 800);
+   addIfMissing(repo, "Suzuki Access 125", "Bike", "KL-11-AB-2008", 550);
    addIfMissing(repo, "Honda Hornet 2.0", "Bike", "KL-11-AB-2009", 850);
    addIfMissing(repo, "KTM Duke 390", "Bike", "KL-11-AB-2010", 1500);
    addIfMissing(repo, "Yamaha MT-15", "Bike", "KL-11-AB-2011", 1050);
@@ -47,7 +48,9 @@ public class DataLoader {
  }
 
  private void addIfMissing(VehicleRepository repo, String name, String type, String registrationNumber, double pricePerDay) {
-  if (repo.findByRegistrationNumber(registrationNumber).isEmpty()) {
+  boolean exists = repo.findAll().stream()
+    .anyMatch(v -> registrationNumber.equals(v.getRegistrationNumber()));
+  if (!exists) {
    repo.save(new Vehicle(name, type, registrationNumber, pricePerDay, true));
   }
  }
