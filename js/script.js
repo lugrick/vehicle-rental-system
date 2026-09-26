@@ -1,6 +1,6 @@
 let vehicles = [];
 
-const API_URL = 'const API_URL = 'https://vehicle-rental-backend-production-6e92.up.railway.app/api';';
+const API_URL = 'https://vehicle-rental-backend-production-6e92.up.railway.app/api';
 
 function money(n) {
     return '₹' + Number(n).toLocaleString('en-IN');
