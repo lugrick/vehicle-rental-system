@@ -402,6 +402,62 @@ function login() {
     }
 }
 
+function register() {
+    const f = document.getElementById('registerForm');
+    if (!f) return;
+
+    f.addEventListener('submit', async e => {
+        e.preventDefault();
+
+        const name = document.getElementById('registerName').value.trim();
+        const phone = document.getElementById('registerPhone').value.trim();
+        const password = document.getElementById('registerPassword').value;
+        const confirm = document.getElementById('registerConfirm').value;
+        const error = document.getElementById('registerError');
+        const button = f.querySelector('button[type="submit"]');
+
+        if (error) {
+            error.style.display = 'none';
+            error.textContent = '';
+        }
+
+        if (password !== confirm) {
+            error.textContent = 'Passwords do not match.';
+            error.style.display = 'block';
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = 'Creating account...';
+
+        try {
+            const response = await fetch(\`\${API_URL}/customers/register\`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phoneNumber: phone, password })
+            });
+
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch { data = text; }
+
+            if (!response.ok) {
+                throw new Error(typeof data === 'string' ? data : 'Registration failed');
+            }
+
+            localStorage.setItem('driveeaseCustomer', JSON.stringify(data));
+            localStorage.setItem('driveeaseUser', data.phoneNumber || phone);
+            location.href = 'home.html';
+        } catch (err) {
+            error.textContent = err.message || 'Registration failed. Please try again.';
+            error.style.display = 'block';
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Create Account';
+        }
+    });
+}
+
 function confirmation() {
 
     const el =
