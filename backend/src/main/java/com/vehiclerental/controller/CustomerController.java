@@ -1,0 +1,8 @@
+package com.vehiclerental.controller;
+import com.vehiclerental.entity.Customer; import com.vehiclerental.repository.CustomerRepository; import org.springframework.http.ResponseEntity; import org.springframework.security.crypto.password.PasswordEncoder; import org.springframework.web.bind.annotation.*; import java.util.List;
+@RestController @RequestMapping("/api/customers") @CrossOrigin(origins="*") public class CustomerController {
+ private final CustomerRepository repo; private final PasswordEncoder encoder; public CustomerController(CustomerRepository r,PasswordEncoder e){repo=r;encoder=e;}
+ @GetMapping public List<Customer> all(){return repo.findAll().stream().peek(c->c.setPassword(null)).toList();}
+ @PostMapping("/register") public ResponseEntity<?> register(@RequestBody Customer i){if(i.getName()==null||i.getName().isBlank()||i.getPhoneNumber()==null||i.getPassword()==null)return ResponseEntity.badRequest().body("Name, phone number and password are required");if(repo.findByPhoneNumber(i.getPhoneNumber()).isPresent())return ResponseEntity.badRequest().body("Phone number already registered");i.setPassword(encoder.encode(i.getPassword()));Customer s=repo.save(i);s.setPassword(null);return ResponseEntity.ok(s);}
+ @PostMapping("/login") public ResponseEntity<?> login(@RequestBody Customer i){Customer c=repo.findByPhoneNumber(i.getPhoneNumber()).orElse(null);if(c==null||!encoder.matches(i.getPassword(),c.getPassword()))return ResponseEntity.status(401).body("Invalid phone number or password");c.setPassword(null);return ResponseEntity.ok(c);}
+}
