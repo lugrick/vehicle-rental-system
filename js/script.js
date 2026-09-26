@@ -28,7 +28,7 @@ function showRegistrationPrompt(){
  if(id)localStorage.setItem('pendingBookingVehicleId',id);
  const form=document.getElementById('bookingForm');
  if(form){
-  form.innerHTML='<div class="price-box" style="display:block;text-align:center;padding:28px"><span class="eyebrow">READY TO RENT?</span><h3 style="margin:10px 0 8px">Create your account to book</h3><p>You can browse vehicles, compare prices and check availability without signing in. We only ask you to register when you are ready to reserve a vehicle.</p><div style="margin-top:18px"><a class="btn primary" href="register.html">Register to Book</a><a class="btn ghost" style="margin-left:8px" href="login.html">Already registered? Login</a></div></div>';
+  form.innerHTML='<div class="price-box" style="display:block;text-align:center;padding:28px"><span class="eyebrow">READY TO RENT?</span><h3 style="margin:10px 0 8px">Login or create an account to book</h3><p>You can browse cars, bikes, compare prices and check availability without signing in. When you are ready to reserve, simply login if you already have an account, or create one.</p><div style="margin-top:18px"><a class="btn primary" href="register.html">Register to Book</a><a class="btn ghost" style="margin-left:8px" href="login.html">Already registered? Login</a></div></div>';
  }
 }
 function booking(){
@@ -51,7 +51,8 @@ async function availability(){
  result.innerHTML='<p>Checking availability...</p>';try{const checks=await Promise.all(vehicles.filter(v=>type==='Any'||v.type===type).map(async v=>({v,ok:v.available&&await api('/reservations/availability/'+v.id+'?startDate='+start+'&endDate='+end)})));const found=checks.filter(x=>x.ok);result.innerHTML=found.length?'<div class="availability-list">'+found.map(x=>'<div class="price-box"><span><b>'+x.v.name+'</b><br>'+money(x.v.pricePerDay)+' / day</span><a class="btn primary" href="booking.html?id='+x.v.id+'">Book</a></div>').join('')+'</div>':'<p class="error-text">No vehicles are available for those dates.</p>'}catch(err){result.innerHTML='<p class="error-text">'+err.message+'</p>'}});
 }
 async function dashboard(){
- const list=document.getElementById('bookingList');if(!list)return;const c=customer();if(!c)return;
+ const list=document.getElementById('bookingList');if(!list)return;const c=customer();
+ if(!c){list.innerHTML='<div class="form-card" style="text-align:center"><span class="eyebrow">CUSTOMER AREA</span><h3>Login to view your reservations</h3><p>You can browse the website freely. Sign in only when you want to manage bookings.</p><div style="margin-top:18px"><a class="btn primary" href="login.html">Login</a><a class="btn ghost" style="margin-left:8px" href="register.html">Create Account</a></div></div>';return}
  const welcome=document.getElementById('welcomeUser');if(welcome)welcome.textContent='Signed in as '+c.name+' · '+c.phoneNumber;
  try{const [arr,all]=await Promise.all([api('/reservations/customer/'+c.id),api('/vehicles')]);list.innerHTML=arr.length?arr.map(b=>{const v=all.find(x=>x.id===b.vehicleId);return '<div class="booking-row"><div><b>'+(v?v.name:'Vehicle')+'</b><p>'+b.startDate+' → '+b.endDate+'</p></div><div style="text-align:right"><span class="status">'+b.status+'</span><b style="display:block;margin-top:8px">'+money(b.totalCost)+'</b><small>Booking #'+b.id+'</small></div></div>'}).join(''):'<div class="form-card"><h3>No reservations yet</h3><p>Browse the fleet and make your first booking.</p><a class="btn primary" href="vehicles.html">Browse Vehicles</a></div>'}catch(e){list.innerHTML='<div class="form-card"><p>Unable to load reservations.</p></div>'}
 }
