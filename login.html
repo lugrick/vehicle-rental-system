@@ -1,4 +1,36 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Login | DriveEase</title><link rel="stylesheet" href="css/style.css"></head>
-<body><main class="auth"><div class="auth-panel"><a class="brand" href="index.html">Drive<span>Ease</span></a><span class="eyebrow">ACCOUNT ACCESS</span><h1>Welcome back.</h1><p>Login with your registered phone number and password.</p><form id="loginForm"><label>Phone Number<input id="loginPhone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="15" placeholder="Enter phone number" required></label><label>Password<input id="loginPassword" type="password" required></label><button class="btn primary" type="submit">Login</button><p id="loginError" class="hint" style="color:#c62828;display:none"></p></form><a class="btn ghost full" href="register.html">Create New Account</a><button class="btn ghost full" id="adminLogin" type="button">Admin Login</button></div></main><script src="js/script.js"></script></body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | DriveEase</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="auth">
+<div class="auth-panel">
+<a class="brand" href="index.html">Drive<span>Ease</span></a>
+<span class="eyebrow">CUSTOMER LOGIN</span>
+<h1>Welcome back.</h1>
+<p>Login to continue to the vehicle rental system.</p>
+
+<form id="loginForm">
+<label>Phone Number
+<input id="loginPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="Enter phone number" required>
+</label>
+
+<label>Password
+<input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password" required>
+</label>
+
+<button class="btn primary" type="submit">Login</button>
+<p id="loginError" class="hint" style="color:#c62828;display:none"></p>
+</form>
+
+<a class="btn ghost full" href="register.html">Create Account</a>
+<button class="btn ghost full" id="adminLogin" type="button">Admin Login</button>
+</div>
+</main>
+<script src="js/script.js"></script>
+</body>
+</html>
