@@ -1,0 +1,3 @@
+package com.vehiclerental.repository;
+import com.vehiclerental.entity.Reservation; import org.springframework.data.jpa.repository.JpaRepository; import java.time.LocalDate; import java.util.List;
+public interface ReservationRepository extends JpaRepository<Reservation,Long>{List<Reservation> findByCustomerIdOrderByIdDesc(Long customerId); List<Reservation> findByVehicleIdAndStatusAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Long vehicleId,String status,LocalDate endDate,LocalDate startDate);}
