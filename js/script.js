@@ -26,7 +26,7 @@ function details(){
 function booking(){
  const form=document.getElementById('bookingForm');if(!form)return;
  const v=vehicles.find(x=>x.id===Number(new URLSearchParams(location.search).get('id')))||vehicles[0];if(!v)return;
- const c=customer();if(!c){location.href='login.html';return}
+ const c=customer();if(!c){location.href='register.html';return}
  document.getElementById('bookingVehicle').textContent=v.name+' · '+money(v.pricePerDay)+' per day';
  const pickup=document.getElementById('bookPickup'),ret=document.getElementById('bookReturn'),total=document.getElementById('estimatedTotal'),error=document.getElementById('bookingError')||document.createElement('p');
  const today=new Date().toISOString().split('T')[0];pickup.min=today;ret.min=today;
@@ -57,7 +57,7 @@ async function register(){
  f.addEventListener('submit',async e=>{e.preventDefault();const name=document.getElementById('registerName').value.trim(),phone=normalizePhone(document.getElementById('registerPhone').value),password=document.getElementById('registerPassword').value,confirm=document.getElementById('registerConfirm').value,error=document.getElementById('registerError'),button=f.querySelector('button[type=submit]');error.style.display='none';if(phone.length!==10){error.textContent='Enter a valid 10-digit phone number.';error.style.display='block';return}if(password!==confirm){error.textContent='Passwords do not match.';error.style.display='block';return}button.disabled=true;button.textContent='Creating account...';try{const data=await api('/customers/register',{method:'POST',body:JSON.stringify({name,phoneNumber:phone,password})});localStorage.setItem('driveeaseCustomer',JSON.stringify(data));location.href='home.html'}catch(err){error.textContent=err.message;error.style.display='block'}finally{button.disabled=false;button.textContent='Register'}});
 }
 function confirmation(){const el=document.getElementById('confirmationText');if(el){const id=new URLSearchParams(location.search).get('id');el.textContent='Reservation #'+(id||'')+' was confirmed and saved to the database.'}}
-function protectPage(){const p=location.pathname.split('/').pop()||'index.html';if(!['index.html','login.html','register.html'].includes(p)&&!customer()){location.replace('login.html');return false}return true}
+function protectPage(){return true}
 function logout(){localStorage.removeItem('driveeaseCustomer');location.href='login.html'}
 document.addEventListener('DOMContentLoaded',async()=>{if(!protectPage())return;await loadVehicles();login();register();dashboard();confirmation();const out=document.getElementById('logoutButton');if(out)out.onclick=logout});
 document.addEventListener('input',e=>{if(e.target.id==='vehicleSearch'||e.target.id==='typeFilter')renderVehicles()});
