@@ -1,6 +1,51 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DriveEase Admin</title><link rel="stylesheet" href="../css/admin.css"></head>
-<body><div class="admin-shell"><aside class="sidebar"><a class="admin-brand" href="index.html">Drive<span>Ease</span><small>ADMIN</small></a><button class="side-link active" data-section="overview">▦ Overview</button><button class="side-link" data-section="vehicles">🚗 Vehicles</button><button class="side-link" data-section="bookings">▣ Bookings</button><button class="side-link" data-section="customers">♙ Customers</button><button class="side-link" data-section="reports">⌁ Reports</button><a class="side-link" href="../home.html">↗ View Website</a><button class="side-link logout" id="adminLogout">↪ Logout</button></aside>
-<main class="admin-main"><header class="admin-top"><div><span class="eyebrow">CONTROL CENTER</span><h1 id="sectionTitle">Overview</h1></div><div class="admin-user"><span class="avatar">A</span><div><b>Administrator</b><small>System Manager</small></div></div></header>
-<section id="adminContent"></section></main></div><script src="../js/admin.js"></script></body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DriveEase | Admin</title>
+<link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+<div id="adminLogin" class="admin-login">
+  <div class="login-card">
+    <a class="admin-brand large" href="../index.html">Drive<span>Ease</span><small>ADMIN</small></a>
+    <span class="eyebrow">CONTROL CENTER</span>
+    <h1>Admin login</h1>
+    <p>Manage vehicles and reservations from one place.</p>
+    <form id="adminLoginForm">
+      <label>Username<input id="adminUsername" value="admin" autocomplete="username" required></label>
+      <label>Password<input id="adminPassword" type="password" placeholder="Enter admin password" autocomplete="current-password" required></label>
+      <button class="admin-btn primary" type="submit">Sign in</button>
+      <p id="adminLoginError" class="error-text"></p>
+    </form>
+    <a class="back-link" href="../home.html">← Back to website</a>
+  </div>
+</div>
+
+<div id="adminApp" class="admin-shell" hidden>
+  <aside class="sidebar">
+    <a class="admin-brand" href="index.html">Drive<span>Ease</span><small>ADMIN</small></a>
+    <button class="side-link active" data-section="overview">▦ <span>Overview</span></button>
+    <button class="side-link" data-section="vehicles">🚗 <span>Vehicles</span></button>
+    <button class="side-link" data-section="bookings">▣ <span>Bookings</span></button>
+    <button class="side-link" data-section="customers">♙ <span>Customers</span></button>
+    <a class="side-link" href="../home.html">↗ <span>View Website</span></a>
+    <button class="side-link logout" id="adminLogout">↪ <span>Logout</span></button>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-top">
+      <div>
+        <span class="eyebrow">CONTROL CENTER</span>
+        <h1 id="sectionTitle">Overview</h1>
+      </div>
+      <div class="admin-user"><span class="avatar">A</span><div><b>Administrator</b><small>System Manager</small></div></div>
+    </header>
+    <div id="adminNotice" class="notice" aria-live="polite"></div>
+    <section id="adminContent"></section>
+  </main>
+</div>
+<script src="../js/admin.js"></script>
+</body>
+</html>
