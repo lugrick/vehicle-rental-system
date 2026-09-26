@@ -23,10 +23,16 @@ function details(){
  const id=Number(new URLSearchParams(location.search).get('id'));const v=vehicles.find(x=>x.id===id)||vehicles[0];if(!v)return;
  el.innerHTML=\`<div><div class="details-img">\${icon(v)}</div></div><div class="details-card"><span class="eyebrow">\${v.type}</span><h1 style="font:700 44px 'Space Grotesk';margin:12px 0">\${v.name}</h1><p style="color:#667085;line-height:1.7">Comfortable and well-maintained vehicle for your next trip.</p><p><b>\${v.type==='Bike'?2:5}</b> seats · <b>Petrol</b> · <b>\${v.available?'Available':'Unavailable'}</b></p><h2>\${money(v.pricePerDay)} <small>/ day</small></h2>\${v.available?'<a class="btn primary" href="booking.html?id='+v.id+'">Reserve Now</a>':'<span class="btn ghost">Currently Unavailable</span>'}</div>\`;
 }
+function showRegistrationPrompt(){
+ const form=document.getElementById('bookingForm');
+ if(form){
+  form.innerHTML='<div class="price-box" style="display:block;text-align:center"><h3 style="margin-top:0">Registration required</h3><p>You can browse vehicles and check availability without an account. Please register or login when you are ready to book.</p><a class="btn primary" href="register.html">Register to Book</a><a class="btn ghost" style="margin-left:8px" href="login.html">Already registered? Login</a></div>';
+ }
+}
 function booking(){
  const form=document.getElementById('bookingForm');if(!form)return;
  const v=vehicles.find(x=>x.id===Number(new URLSearchParams(location.search).get('id')))||vehicles[0];if(!v)return;
- const c=customer();if(!c){location.href='register.html';return}
+ const c=customer();if(!c){showRegistrationPrompt();return}
  document.getElementById('bookingVehicle').textContent=v.name+' · '+money(v.pricePerDay)+' per day';
  const pickup=document.getElementById('bookPickup'),ret=document.getElementById('bookReturn'),total=document.getElementById('estimatedTotal'),error=document.getElementById('bookingError')||document.createElement('p');
  const today=new Date().toISOString().split('T')[0];pickup.min=today;ret.min=today;
